@@ -1,0 +1,13 @@
+# Python
+backend/.venv/
+backend/**/__pycache__/
+*.py[cod]
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Local environment configuration
+.env
+.env.*
