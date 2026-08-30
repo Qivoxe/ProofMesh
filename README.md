@@ -53,3 +53,14 @@ If the backend runs on a different address, start Vite with its API URL:
 $env:VITE_API_URL = "http://127.0.0.1:8000"
 npm run dev
 ```
+
+## Image forensic limitations
+
+`POST /api/v1/investigations/{id}/analyze/copy-move` uses a bounded ORB
+feature-matching pass to highlight potentially repeated areas. It is an
+investigative lead, not proof that an image was copied or manipulated.
+
+It may report naturally repeated textures, patterns, or decorations. It can
+miss small, smooth, blurred, heavily compressed, or strongly rotated/scaled
+copied areas. Tiny, blank, and low-texture images return an empty region list
+with an explanatory signal rather than an error.

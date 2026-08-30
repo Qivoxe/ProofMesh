@@ -25,6 +25,18 @@ def evidence_directory() -> Path:
     return Path(os.environ.get("PROOFMESH_EVIDENCE_DIR", DEFAULT_EVIDENCE_DIR))
 
 
+def investigation_file(investigation_id: str) -> Path:
+    """Find the single original evidence file for an investigation."""
+    investigation_dir = evidence_directory() / investigation_id
+    if not investigation_dir.is_dir():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Investigation not found.")
+
+    files = [path for path in investigation_dir.iterdir() if path.is_file() and not path.name.startswith(".")]
+    if len(files) != 1:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Evidence file not found.")
+    return files[0]
+
+
 def _validate_upload(file: UploadFile) -> tuple[str, str]:
     original_name = file.filename or ""
     extension = Path(original_name).suffix.lower()
