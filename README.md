@@ -415,3 +415,11 @@ Set before `npm run dev` if backend is not at the default address.
 - **Explainability:** Every finding includes source, kind, message, and confidence. Score is reproducible with documented weights.
 - **UX:** Clear progress states, graceful error handling, OCR unavailable fallback.
 - **Code Quality:** Typed throughout (Python type hints + TypeScript). No `any` types. Clean separation of concerns.
+
+
+## Team
+
+* **SHIVAM**
+* **NANCY**
+* **GOPAL KUMAR**
+
