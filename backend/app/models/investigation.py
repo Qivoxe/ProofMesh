@@ -99,3 +99,40 @@ class OCRRegionRelationship(BaseModel):
 class DocumentForensicsResponse(BaseModel):
     findings: list[DocumentForensicsFinding] = Field(default_factory=list)
     ocr_region_relationships: list[OCRRegionRelationship] = Field(default_factory=list)
+
+
+class NormalizedFusionSignal(BaseModel):
+    category: str
+    kind: str
+    message: str
+    normalized_concern: float = Field(ge=0, le=1)
+
+
+class EvidenceFusionResponse(BaseModel):
+    evidence_integrity_score: float = Field(ge=0, le=100)
+    risk_level: str
+    findings: list[NormalizedFusionSignal] = Field(default_factory=list)
+    normalized_signals: list[NormalizedFusionSignal] = Field(default_factory=list)
+    category_concern_scores: dict[str, float] = Field(default_factory=dict)
+    weights: dict[str, float] = Field(default_factory=dict)
+    confidence: float = Field(ge=0, le=100)
+    explanation: str
+
+
+class EvidenceGraphNode(BaseModel):
+    id: str
+    node_type: str
+    label: str
+    investigation_id: str
+    evidence_reference: str
+
+
+class EvidenceGraphEdge(BaseModel):
+    source: str
+    target: str
+    relationship: str
+
+
+class EvidenceGraphResponse(BaseModel):
+    nodes: list[EvidenceGraphNode] = Field(default_factory=list)
+    edges: list[EvidenceGraphEdge] = Field(default_factory=list)

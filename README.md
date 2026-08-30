@@ -86,3 +86,14 @@ misread text or positions, and intentional templates can have unusual layout.
 These are review signals only. ProofMesh does not identify a font from this
 pipeline and reports layout observations as `Text rendering/layout
 inconsistency` instead.
+
+## Evidence fusion
+
+`POST /api/v1/investigations/{id}/analyze/fusion` combines metadata, image,
+copy-move, OCR, document-layout, and cross-signal outputs into a reproducible
+**Evidence Integrity Score** (0–100). It begins at 100 and deducts weighted,
+normalized review concerns. The response exposes its normalized category
+weights and concern scores. Configure category weights with non-negative
+environment variables such as `PROOFMESH_FUSION_IMAGE_WEIGHT=0.35`; the engine
+renormalizes all five category weights to sum to one. The score is a heuristic
+review aid, never a probability of fraud or manipulation.

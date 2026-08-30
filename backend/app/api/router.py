@@ -4,6 +4,8 @@ from app.models.health import HealthResponse
 from app.models.investigation import (
     CopyMoveAnalysisResponse,
     DocumentForensicsResponse,
+    EvidenceFusionResponse,
+    EvidenceGraphResponse,
     ImageForensicsResponse,
     InvestigationResponse,
     MetadataAnalysisResponse,
@@ -12,6 +14,8 @@ from app.models.investigation import (
 from app.services.copy_move_detection import analyze_copy_move
 from app.services.document_forensics import analyze_document_forensics
 from app.services.evidence_storage import store_evidence
+from app.services.evidence_fusion import analyze_evidence_fusion
+from app.services.evidence_graph import build_evidence_graph
 from app.services.image_forensics import analyze_image_forensics
 from app.services.metadata_analysis import analyze_metadata
 from app.services.ocr import analyze_ocr
@@ -85,3 +89,23 @@ def analyze_investigation_ocr(investigation_id: str) -> OCRAnalysisResponse:
 def analyze_investigation_document(investigation_id: str) -> DocumentForensicsResponse:
     """Compare OCR layout patterns and relate text boxes to image-analysis regions."""
     return analyze_document_forensics(investigation_id)
+
+
+@api_router.post(
+    "/api/v1/investigations/{investigation_id}/analyze/fusion",
+    response_model=EvidenceFusionResponse,
+    tags=["investigations"],
+)
+def analyze_investigation_fusion(investigation_id: str) -> EvidenceFusionResponse:
+    """Combine available evidence-analysis signals into a reproducible integrity score."""
+    return analyze_evidence_fusion(investigation_id)
+
+
+@api_router.get(
+    "/api/v1/investigations/{investigation_id}/graph",
+    response_model=EvidenceGraphResponse,
+    tags=["investigations"],
+)
+def get_investigation_graph(investigation_id: str) -> EvidenceGraphResponse:
+    """Return evidence-backed artifact, signal, region, and finding relationships."""
+    return build_evidence_graph(investigation_id)
