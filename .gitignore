@@ -11,3 +11,4 @@ frontend/.vite/
 # Local environment configuration
 .env
 .env.*
+.kilo
