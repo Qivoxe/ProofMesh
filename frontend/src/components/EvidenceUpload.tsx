@@ -1,22 +1,22 @@
 import { ChangeEvent, DragEvent, useRef, useState } from "react";
 
 import { formatBytes } from "../lib/format";
-import { uploadEvidence } from "../services/api";
-import type { InvestigationResponse } from "../types/investigation";
 
 const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "application/pdf"];
 
-export function EvidenceUpload() {
+interface EvidenceUploadProps {
+  onUpload: (file: File) => void;
+}
+
+export function EvidenceUpload({ onUpload }: EvidenceUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [result, setResult] = useState<InvestigationResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   function chooseFile(file: File | undefined) {
     if (!file) return;
     setSelectedFile(file);
-    setResult(null);
     setError(null);
   }
 
@@ -34,9 +34,9 @@ export function EvidenceUpload() {
     setIsUploading(true);
     setError(null);
     try {
-      setResult(await uploadEvidence(selectedFile));
+      onUpload(selectedFile);
+      setSelectedFile(null);
     } catch (uploadError) {
-      setResult(null);
       setError(uploadError instanceof Error ? uploadError.message : "Unable to upload evidence.");
     } finally {
       setIsUploading(false);
@@ -54,7 +54,13 @@ export function EvidenceUpload() {
         tabIndex={0}
         onKeyDown={(event) => event.key === "Enter" && inputRef.current?.click()}
       >
-        <input ref={inputRef} className="hidden" type="file" accept=".png,.jpg,.jpeg,.pdf" onChange={handleChange} />
+        <input
+          ref={inputRef}
+          className="hidden"
+          type="file"
+          accept=".png,.jpg,.jpeg,.pdf"
+          onChange={handleChange}
+        />
         <p className="font-medium text-white">Drop evidence here, or select a file</p>
         <p className="mt-2 text-sm text-slate-400">PNG, JPG, JPEG, or PDF · maximum 50 MB</p>
       </div>
@@ -76,19 +82,10 @@ export function EvidenceUpload() {
         </div>
       )}
 
-      {selectedFile && !ACCEPTED_FILE_TYPES.includes(selectedFile.type) && <p className="mt-3 text-sm text-rose-300">Select a PNG, JPG, JPEG, or PDF file.</p>}
-      {error && <p className="mt-3 text-sm text-rose-300">{error}</p>}
-      {result && (
-        <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm">
-          <p className="font-semibold text-emerald-300">Upload successful</p>
-          <dl className="mt-3 grid gap-2 text-slate-300 sm:grid-cols-[7rem_1fr]">
-            <dt className="text-slate-500">Filename</dt><dd className="break-all">{result.filename}</dd>
-            <dt className="text-slate-500">Size</dt><dd>{formatBytes(result.file_size)}</dd>
-            <dt className="text-slate-500">Type</dt><dd>{result.file_type}</dd>
-            <dt className="text-slate-500">SHA-256</dt><dd className="break-all font-mono text-xs">{result.sha256}</dd>
-          </dl>
-        </div>
+      {selectedFile && !ACCEPTED_FILE_TYPES.includes(selectedFile.type) && (
+        <p className="mt-3 text-sm text-rose-300">Select a PNG, JPG, JPEG, or PDF file.</p>
       )}
+      {error && <p className="mt-3 text-sm text-rose-300">{error}</p>}
     </div>
   );
 }

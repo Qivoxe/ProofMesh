@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { HealthStatus } from "../components/HealthStatus";
 import { EvidenceUpload } from "../components/EvidenceUpload";
 import { getHealth } from "../services/api";
+import { HealthStatus } from "../components/HealthStatus";
 
 type ConnectionState = "loading" | "online" | "offline";
 
-export function LandingPage() {
+interface LandingPageProps {
+  onUpload: (file: File) => void;
+}
+
+export function LandingPage({ onUpload }: LandingPageProps) {
   const [connectionState, setConnectionState] = useState<ConnectionState>("loading");
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export function LandingPage() {
         <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
           Start an investigation by securely preserving a local copy of your evidence and its SHA-256 fingerprint.
         </p>
-        <EvidenceUpload />
+        <EvidenceUpload onUpload={onUpload} />
       </section>
     </main>
   );
