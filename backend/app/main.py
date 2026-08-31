@@ -14,7 +14,9 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "https://proof-mesh-ewoo6yjwc-shivamroy.vercel.app",
         "https://proof-mesh-5qo1b58pg-shivamroy.vercel.app",
+        "https://proof-mesh-kohl.vercel.app",
     ],
     allow_credentials=False,
     allow_methods=["*"],
