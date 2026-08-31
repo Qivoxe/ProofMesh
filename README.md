@@ -4,7 +4,7 @@
 
 ProofMesh takes a piece of digital evidence (image or PDF) and runs it through a forensic pipeline that fuses metadata analysis, image forensics, copy-move detection, OCR, and document-layout analysis into a single, explainable **Evidence Integrity Score**. Every finding is traceable to its source signal — no black-box verdicts, no unsubstantiated claims of manipulation.
 
-**[Live Demo](https://proof-mesh-ewoo6yjwc-shivamroy.vercel.app/)** · **[API Docs](https://proofmesh.onrender.com/docs)** · **[Backend](https://proofmesh.onrender.com)**
+**[Live Demo](https://proof-mesh-ewoo6yjwc-shivamroy.vercel.app/)** · **[API Docs](https://proofmesh.onrender.com/docs)** 
 
 ---
 
