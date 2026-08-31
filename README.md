@@ -1,4 +1,4 @@
-# Proofmesh
+# ProofMesh
 
 **AI-powered evidence integrity analysis — upload, verify, explain.**
 
